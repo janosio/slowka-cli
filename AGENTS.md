@@ -19,9 +19,11 @@ Czytaj go przed większą zmianą kodu.
 ## Testy (obowiązkowe)
 
 1. Logika gry i statystyk żyje w `src/domain/`. **Każda** zmiana reguł, ewaluacji, normalizacji lub stats **musi** mieć zaktualizowane lub nowe testy w `tests/`.
-2. Po zmianach domeny uruchom: `npm test` (oraz `npm run build`, jeśli ruszasz TypeScript publiczny / UI kompilowany).
-3. Nie merguj / nie kończ zadania ze czerwonymi testami.
-4. UI (Ink) nie wymaga pełnych testów e2e na start, ale:
+2. Po zmianach domeny uruchom: `npm test` (oraz `npm run build`, jeśli ruszasz TypeScript publiczny / UI kompilowany). Lokalnie możesz też: `npm run ci` (= test + build).
+3. **Pre-commit (husky)** automatycznie odpala `npm test` przy każdym commitcie. Nie używaj `git commit --no-verify`, chyba że masz wyraźne uzasadnienie.
+4. **CI (GitHub Actions)** na `main` musi być zielone (`npm test` + `npm run build` na Node 20 i 22). Nie merguj PR-ów z czerwonym CI.
+5. Nie kończ zadania ze czerwonymi testami lokalnie.
+6. UI (Ink) nie wymaga pełnych testów e2e na start, ale:
    - nie przenoś logiki gry do komponentów UI — trzymaj ją w `domain/`;
    - jeśli dodajesz czystą funkcję pomocniczą (np. formatowanie menu), rozważ test jednostkowy.
 
@@ -39,14 +41,16 @@ commands/ → entrypointy commander / render
 
 ## Checklist przed zakończeniem zadania
 
-- [ ] `npm test` przechodzi
-- [ ] `npm run build` przechodzi (gdy zmieniano `src/`)
+- [ ] `npm test` przechodzi (hook pre-commit też to sprawdzi)
+- [ ] `npm run build` przechodzi (gdy zmieniano `src/`) — albo `npm run ci`
 - [ ] Jeśli bump wersji: `package.json` = `CHANGELOG.md` = README (linia Wersja); `slowka --version` pokazuje tę samą wartość
 - [ ] README opisuje nowe komendy / skróty klawiszowe, jeśli je dodałeś
 - [ ] Brak sekretów w commitach; statystyki lokalne zostają poza repo
+- [ ] Nie omijaj husky przez `--no-verify` bez uzasadnienia
 
 ## Czego nie robić
 
 - Nie edytuj planów użytkownika w `.cursor/plans/` bez prośby.
 - Nie commituj `node_modules/` ani `dist/` jeśli nie jest to wymagane workflow (dist jest budowany lokalnie / przy publish).
 - Nie łam polskiego alfabetu: `ą` ≠ `a` (normalizacja `pl-PL`).
+- Nie omijaj testów pre-commit / CI bez wyraźnej prośby użytkownika.

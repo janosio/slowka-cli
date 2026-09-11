@@ -1,4 +1,5 @@
 import { Command } from "commander";
+import { runKeysProbe } from "./commands/keys.js";
 import { runPlay } from "./commands/play.js";
 import { runMenu, runStats } from "./commands/stats.js";
 import { getPackageVersion } from "./infra/version.js";
@@ -29,6 +30,13 @@ program
   .description("Od razu pokaż lokalne statystyki")
   .action(async () => {
     await runStats();
+  });
+
+program
+  .command("keys")
+  .description("Sonda klawiatury — pokaż surowe eventy (diagnoza ż / diakrytyków)")
+  .action(async () => {
+    await runKeysProbe();
   });
 
 await program.parseAsync(process.argv);

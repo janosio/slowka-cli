@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Box, Text, useApp, useInput } from "ink";
+import { Box, Text, useApp } from "ink";
 import {
   backspace,
   createClassicState,
@@ -18,6 +18,7 @@ import { updateClassicStats } from "../infra/storage.js";
 import { Board } from "./board.js";
 import { toastMessage } from "./colors.js";
 import { KeyboardHint } from "./keyboard-hint.js";
+import { useGameInput } from "./use-game-input.js";
 
 interface PlayScreenProps {
   dictionary: Dictionary;
@@ -72,48 +73,38 @@ export function PlayScreen({
     }
   }, []);
 
-  useInput((input, key) => {
-    if (key.escape) {
-      leave();
-      return;
-    }
-
-    const current = stateRef.current;
-
-    if (current.phase !== "playing") {
+  useGameInput({
+    onEscape: leave,
+    onEnter: () => {
+      const current = stateRef.current;
+      if (current.phase !== "playing") return;
+      const next = submitGuess(current, dictionary.isValid, Date.now());
+      replaceState(next);
+      void persistResult(next);
+    },
+    onBackspace: () => {
+      if (stateRef.current.phase !== "playing") return;
+      setState((s) => backspace(s));
+    },
+    onLetter: (letter) => {
+      if (stateRef.current.phase !== "playing") return;
+      setState((s) => typeLetter(s, letter));
+    },
+    onRaw: (input) => {
+      const current = stateRef.current;
+      if (current.phase === "playing") return false;
       if (input === "n" || input === "N") {
         savedRef.current = false;
         setError(null);
         replaceState(newGame(dictionary));
-        return;
+        return true;
       }
       if (input === "q" || input === "Q") {
         leave();
+        return true;
       }
-      return;
-    }
-
-    if (key.return) {
-      const next = submitGuess(current, dictionary.isValid, Date.now());
-      replaceState(next);
-      void persistResult(next);
-      return;
-    }
-
-    if (key.backspace || key.delete) {
-      setState((s) => backspace(s));
-      return;
-    }
-
-    if (input && !key.ctrl && !key.meta) {
-      setState((s) => {
-        let next = s;
-        for (const ch of input) {
-          next = typeLetter(next, ch);
-        }
-        return next;
-      });
-    }
+      return false;
+    },
   });
 
   const toast = toastMessage(state.toast);

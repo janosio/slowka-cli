@@ -21,6 +21,17 @@ describe("classic-game", () => {
     assert.equal(state.current, "k");
   });
 
+  it("accepts Polish diacritics including ż", () => {
+    let state = createClassicState({ answer: "żółty", now: 1000 });
+    for (const ch of "żółty") state = typeLetter(state, ch);
+    assert.equal(state.current, "żółty");
+
+    // NFD: z + combining dot above → still ż after normalize
+    state = createClassicState({ answer: "żółty", now: 1000 });
+    state = typeLetter(state, "z\u0307");
+    assert.equal(state.current, "ż");
+  });
+
   it("rejects short and unknown words", () => {
     let state = createClassicState({ answer: "kotek", now: 1000 });
     state = typeLetter(state, "k");

@@ -1,6 +1,6 @@
 {
   "name": "slowka-cli",
-  "version": "0.2.0",
+  "version": "0.2.3",
   "description": "Trening 5-literowych słów polskich w terminalu (CLI Słówka)",
   "type": "module",
   "bin": {
@@ -22,6 +22,8 @@
     "dev": "tsx src/index.ts",
     "start": "node bin/slowka.js",
     "test": "tsx --test tests/**/*.test.ts",
+    "ci": "npm test && npm run build",
+    "prepare": "husky",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -41,6 +43,7 @@
   "devDependencies": {
     "@types/node": "^22.13.10",
     "@types/react": "^18.3.18",
+    "husky": "^9.1.7",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   }

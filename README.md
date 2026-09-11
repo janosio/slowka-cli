@@ -1,6 +1,6 @@
 # slowka-cli
 
-**Wersja:** `0.2.0` (źródło prawdy: [`package.json`](./package.json) · historia: [`CHANGELOG.md`](./CHANGELOG.md))
+**Wersja:** `0.2.3` (źródło prawdy: [`package.json`](./package.json) · historia: [`CHANGELOG.md`](./CHANGELOG.md))
 
 Trening 5-literowych słów polskich w terminalu. Mechanika jak tryb **Trening** w aplikacji [Słówka](https://slowka.codeevo.pl/) (Wordle-like: 5 liter × 5 prób, polskie znaki).
 
@@ -38,6 +38,7 @@ npm start -- stats # od razu statystyki
 | `slowka` / `slowka menu` | Menu: trening / statystyki / wyjście |
 | `slowka play` | Od razu trening 5-literowy |
 | `slowka stats` | Od razu statystyki |
+| `slowka keys` | Sonda klawiatury (diagnoza `ż` / diakrytyków) |
 
 ### Menu
 
@@ -81,9 +82,17 @@ Zapis: `~/.config/slowka-cli/stats.json` (lub `$XDG_CONFIG_HOME/slowka-cli/`, al
 
 ```bash
 npm test          # testy domeny (node:test)
+npm run ci        # testy + build (jak w GitHub Actions)
 npm run dev       # tsx bez builda
 npm run build     # kompilacja do dist/
 ```
+
+### Pre-commit i CI
+
+- **Pre-commit (husky):** przy każdym `git commit` uruchamia się `npm test`. Po sklonowaniu: `npm install` (skrypt `prepare` instaluje hooki).
+- **GitHub Actions:** [`.github/workflows/ci.yml`](./.github/workflows/ci.yml) — na `push`/`pull_request` do `main` odpala `npm test` i `npm run build` na Node 20 i 22.
+
+[![CI](https://github.com/janosio/slowka-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/janosio/slowka-cli/actions/workflows/ci.yml)
 
 Wytyczne dla agentów i contributorów: [`AGENTS.md`](./AGENTS.md).  
 Historia wydań: [`CHANGELOG.md`](./CHANGELOG.md).
@@ -98,6 +107,8 @@ src/
   commands/   # menu / play / stats
 data/         # classic-answers.json, classic-valid.json
 tests/        # unit testy domeny
+.husky/       # git hooks (pre-commit → npm test)
+.github/      # GitHub Actions CI
 AGENTS.md     # reguły dla agentów AI / contributorów
 CHANGELOG.md  # Keep a Changelog — wersja = package.json
 ```

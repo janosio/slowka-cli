@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Źródło wersji:** pole `"version"` w [`package.json`](./package.json).  
 Każda zmiana wersji w `package.json` **musi** mieć odpowiadającą sekcję w tym pliku.
 
+## [0.2.3] - 2026-09-11
+
+### Fixed
+
+- Polskie diakrytyki z układu Polski programista (Option/AltGr): `key.meta` nie blokuje już `ż` itd.; mapowanie Option/AltGr + `a c e l n o s x z` → `ą ć ę ł ń ó ś ź ż`
+- Terminale, gdzie Option = Meta: sekwencje `Esc`+litera (jeden lub dwa chunki, też podwójny `Esc Esc`) trafiają do litery zamiast ginąć przy re-renderze
+- Normalizacja NFC zdekomponowanych znaków; dłuższy debounce Escape (250 ms), żeby `⌥Z` nie wyrzucał do menu
+
+### Added
+
+- `slowka keys` — sonda surowych eventów klawiatury (diagnoza diakrytyków)
+
 ## [0.2.0] - 2026-09-11
 
 ### Added
@@ -36,5 +48,6 @@ Każda zmiana wersji w `package.json` **musi** mieć odpowiadającą sekcję w t
 - Testy domeny: ewaluacja zgadywania, state machine, stats
 - README, MIT LICENSE
 
+[0.2.3]: https://github.com/janosio/slowka-cli/compare/v0.2.0...v0.2.3
 [0.2.0]: https://github.com/janosio/slowka-cli/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/janosio/slowka-cli/releases/tag/v0.1.0
