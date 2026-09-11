@@ -1,24 +1,32 @@
 import { Command } from "commander";
 import { runPlay } from "./commands/play.js";
-import { runStats } from "./commands/stats.js";
+import { runMenu, runStats } from "./commands/stats.js";
+import { getPackageVersion } from "./infra/version.js";
 
 const program = new Command();
 
 program
   .name("slowka")
   .description("Trening 5-literowych słów polskich w terminalu")
-  .version("0.1.0");
+  .version(getPackageVersion());
 
 program
-  .command("play", { isDefault: true })
-  .description("Rozpocznij trening (domyślna komenda)")
+  .command("menu", { isDefault: true })
+  .description("Menu główne — wybór trybu i statystyk")
+  .action(async () => {
+    await runMenu();
+  });
+
+program
+  .command("play")
+  .description("Od razu rozpocznij trening 5-literowy")
   .action(async () => {
     await runPlay();
   });
 
 program
   .command("stats")
-  .description("Pokaż lokalne statystyki treningu")
+  .description("Od razu pokaż lokalne statystyki")
   .action(async () => {
     await runStats();
   });

@@ -1,6 +1,6 @@
 {
   "name": "slowka-cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Trening 5-literowych słów polskich w terminalu (CLI Słówka)",
   "type": "module",
   "bin": {
@@ -11,6 +11,7 @@
     "dist",
     "data",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "engines": {

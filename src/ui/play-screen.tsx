@@ -21,6 +21,8 @@ import { KeyboardHint } from "./keyboard-hint.js";
 
 interface PlayScreenProps {
   dictionary: Dictionary;
+  /** Leave play view (e.g. back to menu). Defaults to exiting the app. */
+  onExit?: () => void;
   /** Called before replacing the frame (e.g. after Enter) so the parent can erase. */
   onBeforeRedraw?: () => void;
 }
@@ -32,8 +34,13 @@ function newGame(dictionary: Dictionary): ClassicState {
   });
 }
 
-export function PlayScreen({ dictionary, onBeforeRedraw }: PlayScreenProps) {
+export function PlayScreen({
+  dictionary,
+  onExit,
+  onBeforeRedraw,
+}: PlayScreenProps) {
   const { exit } = useApp();
+  const leave = onExit ?? exit;
   const [state, setState] = useState<ClassicState>(() => newGame(dictionary));
   const [error, setError] = useState<string | null>(null);
   const stateRef = useRef(state);
@@ -67,7 +74,7 @@ export function PlayScreen({ dictionary, onBeforeRedraw }: PlayScreenProps) {
 
   useInput((input, key) => {
     if (key.escape) {
-      exit();
+      leave();
       return;
     }
 
@@ -81,7 +88,7 @@ export function PlayScreen({ dictionary, onBeforeRedraw }: PlayScreenProps) {
         return;
       }
       if (input === "q" || input === "Q") {
-        exit();
+        leave();
       }
       return;
     }
@@ -114,9 +121,9 @@ export function PlayScreen({ dictionary, onBeforeRedraw }: PlayScreenProps) {
   const status =
     toast ??
     (state.phase === "won"
-      ? `Brawo! Hasło: ${state.answer.toLocaleUpperCase("pl-PL")} · n = następna · Esc/q = wyjście`
+      ? `Brawo! Hasło: ${state.answer.toLocaleUpperCase("pl-PL")} · n = następna · Esc = menu`
       : state.phase === "lost"
-        ? `Koniec. Hasło: ${state.answer.toLocaleUpperCase("pl-PL")} · n = następna · Esc/q = wyjście`
+        ? `Koniec. Hasło: ${state.answer.toLocaleUpperCase("pl-PL")} · n = następna · Esc = menu`
         : error);
 
   return (

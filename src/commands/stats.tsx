@@ -1,10 +1,9 @@
-import { render } from "ink";
-import { loadStats } from "../infra/storage.js";
-import { StatsScreen } from "../ui/stats-screen.js";
+import { runApp } from "./play.js";
 
 export async function runStats(): Promise<void> {
-  const file = await loadStats();
-  const instance = render(<StatsScreen classic={file.classic} />);
-  // Stats is a static view — exit after one frame so the command returns.
-  instance.unmount();
+  await runApp("stats");
+}
+
+export async function runMenu(): Promise<void> {
+  await runApp("menu");
 }

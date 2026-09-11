@@ -1,4 +1,4 @@
-import { Box, Text } from "ink";
+import { Box, Text, useInput } from "ink";
 import {
   averageWinTimeMs,
   formatDuration,
@@ -7,7 +7,10 @@ import {
 import type { ClassicStats } from "../domain/types.js";
 
 interface StatsScreenProps {
-  classic: ClassicStats;
+  classic: ClassicStats | null;
+  loading?: boolean;
+  error?: string | null;
+  onBack?: () => void;
 }
 
 function bar(count: number, max: number, width = 20): string {
@@ -16,7 +19,48 @@ function bar(count: number, max: number, width = 20): string {
   return `${"#".repeat(filled)}${"·".repeat(Math.max(0, width - filled))}`;
 }
 
-export function StatsScreen({ classic }: StatsScreenProps) {
+export function StatsScreen({
+  classic,
+  loading = false,
+  error = null,
+  onBack,
+}: StatsScreenProps) {
+  useInput((input, key) => {
+    if (!onBack) return;
+    if (key.escape || key.return || input === "q" || input === "Q") {
+      onBack();
+    }
+  });
+
+  if (loading) {
+    return (
+      <Box flexDirection="column" padding={1}>
+        <Text bold>Słówka CLI — statystyki</Text>
+        <Text dimColor>Wczytywanie…</Text>
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box flexDirection="column" padding={1}>
+        <Text bold>Słówka CLI — statystyki</Text>
+        <Text color="red">{error}</Text>
+        {onBack ? <Text dimColor>Esc / Enter — powrót do menu</Text> : null}
+      </Box>
+    );
+  }
+
+  if (!classic) {
+    return (
+      <Box flexDirection="column" padding={1}>
+        <Text bold>Słówka CLI — statystyki</Text>
+        <Text dimColor>Brak danych.</Text>
+        {onBack ? <Text dimColor>Esc / Enter — powrót do menu</Text> : null}
+      </Box>
+    );
+  }
+
   const rate = winRate(classic);
   const avg = averageWinTimeMs(classic);
   const maxDist = Math.max(1, ...classic.attemptDist);
@@ -44,7 +88,12 @@ export function StatsScreen({ classic }: StatsScreenProps) {
       </Box>
       {classic.played === 0 ? (
         <Box marginTop={1}>
-          <Text dimColor>Brak gier — uruchom: slowka play</Text>
+          <Text dimColor>Brak gier — wybierz trening z menu.</Text>
+        </Box>
+      ) : null}
+      {onBack ? (
+        <Box marginTop={1}>
+          <Text dimColor>Esc / Enter — powrót do menu</Text>
         </Box>
       ) : null}
     </Box>

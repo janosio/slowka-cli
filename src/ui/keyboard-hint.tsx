@@ -48,7 +48,7 @@ export function KeyboardHint({ keyboard }: KeyboardHintProps) {
       ))}
       <Box marginTop={1}>
         <Text dimColor>
-          Enter = zatwierdź · Backspace = skasuj · Esc = wyjście · n = następna
+          Enter = zatwierdź · Backspace = skasuj · Esc = menu · n = następna
           (po grze)
         </Text>
       </Box>
