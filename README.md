@@ -1,6 +1,6 @@
 # slowka-cli
 
-Trening 5-literowych słów polskich w terminalu. Mechanika jak tryb **Trening** w aplikacji [Słówka](https://github.com/) (Wordle-like: 5 liter × 5 prób, polskie znaki).
+Trening 5-literowych słów polskich w terminalu. Mechanika jak tryb **Trening** w aplikacji [Słówka](https://slowka.codeevo.pl/) (Wordle-like: 5 liter × 5 prób, polskie znaki).
 
 ## Wymagania
 
