@@ -4,6 +4,8 @@
 
 Trening 5-literowych słów polskich w terminalu. Mechanika jak tryb **Trening** w aplikacji [Słówka](https://slowka.codeevo.pl/) (Wordle-like: 5 liter × 5 prób, polskie znaki).
 
+![Słówka CLI — trening 5 liter (wygrana: TORBA)](./docs/screenshot-v0.2.3.jpg)
+
 ## Wymagania
 
 - Node.js **>= 20**
