@@ -21,7 +21,7 @@
     "build": "tsc",
     "dev": "tsx src/index.ts",
     "start": "node bin/slowka.js",
-    "test": "tsx --test tests/**/*.test.ts",
+    "test": "tsx --test tests/*.test.ts",
     "ci": "npm test && npm run build",
     "prepare": "husky",
     "prepublishOnly": "npm run build"
