@@ -11,26 +11,22 @@ Trening 5-literowych słów polskich w terminalu. Mechanika jak tryb **Trening**
 ## Instalacja
 
 ```bash
-cd slowka-cli
-npm install
-npm run build
-npm link          # opcjonalnie: komenda `slowka` w PATH
+npm i -g slowka-cli
+slowka
 ```
 
-Uruchomienie bez linkowania:
+Bez instalacji globalnej:
 
 ```bash
-npm start
-# lub
-npx tsx src/index.ts
+npx slowka-cli
 ```
 
 ## Użycie
 
 ```bash
-npm start          # menu główne
-npm start -- play  # od razu trening
-npm start -- stats # od razu statystyki
+slowka             # menu główne
+slowka play        # od razu trening
+slowka stats       # od razu statystyki
 ```
 
 | Komenda | Opis |
@@ -79,6 +75,17 @@ Zapis: `~/.config/slowka-cli/stats.json` (lub `$XDG_CONFIG_HOME/slowka-cli/`, al
 Śledzone: rozegrane, wygrane/przegrane, rozkład prób 1–5, średni czas wygranej.
 
 ## Rozwój
+
+```bash
+git clone https://github.com/janosio/slowka-cli.git
+cd slowka-cli
+npm install
+npm run build
+npm link          # opcjonalnie: `slowka` w PATH
+```
+
+Bez linkowania: `npm start` (albo `npx tsx src/index.ts`).  
+`npm start -- play` / `npm start -- stats` — skróty jak `slowka play` / `slowka stats`.
 
 ```bash
 npm test          # testy domeny (node:test)
